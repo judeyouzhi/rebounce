@@ -61,6 +61,7 @@ class Paddle:
         self.canvas_width = self.canvas.winfo_width()
         self.canvas.bind_all('<KeyPress-Left>', self.left)
         self.canvas.bind_all('<KeyPress-Right>', self.right)
+        self.canvas.bind_all('<KeyPress-space>', self.stop)
 
     def draw(self):
         self.canvas.move(self.id, self.x, 0)
@@ -85,7 +86,8 @@ class Paddle:
         else:
             self.x = 2
 
-
+    def stop(self, evt):
+        self.x = 0
 
 
 tk = Tk()
@@ -112,6 +114,11 @@ while 1:
     if ball.hit_bottom == False:
         ball.draw()
         paddle.draw()
+    else:
+        mylabel = canvas.create_text((230, 200), text="GAME OVER")
+        canvas.delete(paddle.id)
+        canvas.delete(ball.id)
+        canvas.pack()
     tk.update_idletasks()
     tk.update()
     time.sleep(0.01)
