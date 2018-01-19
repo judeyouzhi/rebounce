@@ -35,11 +35,21 @@ class Ball:
             self.x = -3
 
     def hit_paddle(self, pos):
+        global score
         paddle_pos = self.canvas.coords(self.paddle.id)
         if pos[2] >= paddle_pos[0] and pos[0] <= paddle_pos[2]:
             if pos[3] >= paddle_pos[1] and pos[3] <= paddle_pos[3]:
+                self.update_score(score+100)
+                score = score+100
                 return True
         return False
+
+    def update_score(self, score):
+        global mylabel
+        self.canvas.delete(mylabel)
+        mylabel=self.canvas.create_text((230, 20), text="Score: "+str(score))
+
+
 
 
 class Paddle:
@@ -62,10 +72,18 @@ class Paddle:
             self.x = 0
 
     def left(self, evt):
-        self.x = -2
+        print self.x
+        if self.x < 0:
+            self.x = self.x - 0.5
+        else:
+            self.x = -2
 
     def right(self, evt):
-        self.x = 2
+        print self.x
+        if self.x > 0:
+            self.x = self.x + 0.5
+        else:
+            self.x = 2
 
 
 
@@ -75,6 +93,11 @@ tk.title("Bounce")
 tk.resizable(0,0)
 tk.wm_attributes("-topmost", 1)
 canvas = Canvas(tk, width=500, height=400, bd=0, highlightthickness=0)
+
+score= 100
+
+mylabel = canvas.create_text((230, 20), text="Score: "+str(score))
+
 
 canvas.pack()
 
